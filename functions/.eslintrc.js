@@ -1,14 +1,14 @@
 module.exports = {
-  root: true,
-  env: {
+  'root': true,
+  'env': {
     es6: true,
     node: true,
   },
-  extends: [
+  'extends': [
     'eslint:recommended',
     'google',
   ],
-  rules: {
+  'rules': {
     'promise/no-callback-in-promise': 'off',
     'promise/param-names': 'off',
     'promise/catch-or-return': 'off',

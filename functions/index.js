@@ -11,10 +11,10 @@ app.use(cors({ origin: true }));
 
 const productRef = firebase.firestore().collection('products');
 
-app.post('/product', async (req, res) => {
+app.post('/product', (req, res) => {
     const product = req.body;
 
-    await productRef.add(product)
+    productRef.add(product)
         .then((result) => {
             res.status(200).send(`Product added: ${result.id}`);
         }).catch((error) => {
@@ -22,23 +22,9 @@ app.post('/product', async (req, res) => {
         })
 });
 
-app.get('/products', async (req, res) => {
-    await productRef.get()
-        .then((snapshot => {
-            const products = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+app.get("/product/:id", (req, res) => {
 
-            res.status(200).send(products);
-    })).catch((error) => {
-            res.status(500).send(error);
-        })
-});
-
-app.get("/product/:id", async (req, res) => {
-
-    await productRef.doc(req.params.id).get()
+    productRef.doc(req.params.id).get()
         .then(product => {
             if(!product.exists) {
                 throw new Error('Product not found');
@@ -49,20 +35,45 @@ app.get("/product/:id", async (req, res) => {
 
 });
 
-app.put("/product/:id", async (req, res) => {
+app.put("/product/:id", (req, res) => {
 
-    await productRef.doc(req.params.id).update(req.body)
+     productRef.doc(req.params.id).update(req.body)
         .then(() => {
             res.status(200).send("Product successfully updated !")
         }).catch(error => res.status(500).send(error));
 });
 
-app.delete("/product/:id", async (req, res) => {
+app.delete("/product/:id", (req, res) => {
 
-    await productRef.doc(req.params.id).delete()
+    productRef.doc(req.params.id).delete()
         .then(()=>res.status(204).send("Product successfully deleted!"))
         .catch(error =>
             res.status(500).send(error));
 });
 
 exports.api= functions.https.onRequest(app);
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/products', async (req, res) => {
+    productRef.get().then((snapshot => {
+        const products = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        res.status(200).send(products);
+    })).catch((error) => {
+        res.status(500).send(error);
+    })
+});
