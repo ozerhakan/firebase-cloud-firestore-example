@@ -51,20 +51,6 @@ app.delete("/product/:id", (req, res) => {
             res.status(500).send(error));
 });
 
-exports.api= functions.https.onRequest(app);
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get('/products', async (req, res) => {
     productRef.get().then((snapshot => {
         const products = snapshot.docs.map(doc => ({
@@ -77,3 +63,5 @@ app.get('/products', async (req, res) => {
         res.status(500).send(error);
     })
 });
+
+exports.api= functions.https.onRequest(app);
