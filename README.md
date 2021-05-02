@@ -1,3 +1,3 @@
 # firebase-cloud-firestore-example
-A cloud firestore project with firebase
+Developing a simple REST api using the firebase cloud function
 
